@@ -1,0 +1,93 @@
+@startuml
+class Muestra {
+    - codigo: String
+    - lote: String
+    - ensayos: List<Ensayo>
+    + Muestra(codigo: String, lote: String)
+    + getCodigo(): String
+    + getLote(): String
+    + getEnsayos(): List<Ensayo>
+}
+
+class Ensayo {
+    - codigoEnsayo: String
+    - muestra: Muestra
+    - tipoEnsayo: TipoEnsayo
+    - medidas: List<Medida>
+    + Ensayo(codigoEnsayo: String, muestra: Muestra, tipoEnsayo: TipoEnsayo)
+    + getCodigoEnsayo(): String
+    + getMuestra(): Muestra
+    + getTipoEnsayo(): TipoEnsayo
+    + getMedidas(): List<Medida>
+}
+
+class TipoEnsayo {
+    - nombre: String
+    - condicionesMinimas: double
+    + TipoEnsayo(nombre: String, condicionesMinimas: double)
+    + getNombre(): String
+    + getCondicionesMinimas(): double
+}
+
+class Medida {
+    - valor: double
+    - descripcion: String
+    + Medida(valor: double, descripcion: String)
+    + getValor(): double
+    + getDescripcion(): String
+}
+
+class Certificado {
+    - lote: String
+    - firmaDirector: String
+    + Certificado(lote: String, firmaDirector: String)
+    + getLote(): String
+    + getFirmaDirector(): String
+}
+
+class Director {
+    - nombre: String
+    - firma: String
+    + Director(nombre: String, firma: String)
+    + getNombre(): String
+    + getFirma(): String
+}
+
+class Informe {
+    - ensayo: Ensayo
+    - medidas: List<Medida>
+    - cumpleConNormas: boolean
+    + Informe(ensayo: Ensayo, medidas: List<Medida>, cumpleConNormas: boolean)
+    + getEnsayo(): Ensayo
+    + getMedidas(): List<Medida>
+    + isCumpleConNormas(): boolean
+}
+
+class RegistroEnsayo {
+    - ensayos: List<Ensayo>
+    + RegistroEnsayo()
+    + addEnsayo(ensayo: Ensayo): void
+    + getEnsayos(): List<Ensayo>
+}
+
+class Sistema {
+    - registroEnsayo: RegistroEnsayo
+    - director: Director
+    + Sistema(registroEnsayo: RegistroEnsayo, director: Director)
+    + getRegistroEnsayo(): RegistroEnsayo
+    + getDirector(): Director
+}
+
+Muestra "1" -- "0..*" Ensayo : contiene >
+Ensayo "1" -- "1" Muestra : realiza >
+Ensayo "1" -- "1" TipoEnsayo : de tipo >
+Ensayo "1" -- "0..*" Medida : toma >
+Certificado "1" -- "1" Muestra : para >
+Certificado "1" -- "1" Director : firmado por >
+Informe "1" -- "1" Ensayo : basado en >
+Informe "1" -- "0..*" Medida : incluye >
+RegistroEnsayo "1" -- "0..*" Ensayo : mantiene >
+Sistema "1" -- "1" RegistroEnsayo : gestiona >
+Sistema "1" -- "1" Director : supervisado por >
+
+@enduml
